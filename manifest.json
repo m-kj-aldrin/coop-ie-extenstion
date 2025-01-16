@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "CRM Request Extension",
+  "version": "1.0",
+  "description": "Makes POST request to CRM with authentication cookie",
+  "permissions": [
+    "cookies",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://coopcrmprod.crm4.dynamics.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+} 

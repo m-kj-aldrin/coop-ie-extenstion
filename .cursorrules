@@ -1,0 +1,9 @@
+- write modern javascript code
+- use es2020+ syntax and features
+- do NOT use any external libraries or frameworks
+- never use or recomend typescript UNLESS its for writing a *.d.ts file for defining types
+- use JSDoc for typing
+	- use typescript features when inside JSDoc
+	- if required externalise types to a *.d.ts file
+- use OData v4 syntax
+- all OData request are done against a ms crm instance

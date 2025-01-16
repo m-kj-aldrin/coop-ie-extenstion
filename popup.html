@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CRM Request</title>
+        <style>
+            body {
+                width: 400px;
+                padding: 16px;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            }
+            button {
+                width: 100%;
+                padding: 8px;
+                background: #0078d4;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-bottom: 16px;
+            }
+            button:hover {
+                background: #106ebe;
+            }
+            #status {
+                margin-bottom: 16px;
+                font-size: 14px;
+                color: #666;
+            }
+            .entity-data {
+                background: #f5f5f5;
+                border-radius: 4px;
+                padding: 12px;
+                margin-bottom: 8px;
+            }
+            .field {
+                margin-bottom: 8px;
+            }
+            .field:last-child {
+                margin-bottom: 0;
+            }
+            .field label {
+                font-weight: bold;
+                color: #333;
+                display: inline-block;
+                width: 120px;
+            }
+            .field span {
+                color: #666;
+            }
+        </style>
+    </head>
+    <body>
+        <button id="makeRequest">Make CRM Request</button>
+        <div id="status"></div>
+        <div id="results"></div>
+        <script src="popup.js"></script>
+    </body>
+</html>
