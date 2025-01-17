@@ -1,9 +1,38 @@
-- write modern javascript code
-- use es2020+ syntax and features
-- do NOT use any external libraries or frameworks
-- never use or recomend typescript UNLESS its for writing a *.d.ts file for defining types
-- use JSDoc for typing
-	- use typescript features when inside JSDoc
-	- if required externalise types to a *.d.ts file
-- use OData v4 syntax
-- all OData request are done against a ms crm instance
+## Chrome Extension Project
+
+This project is a **Manifest V3** Chrome extension, written entirely in JavaScript without a build step with the only allowed external library being **Alpine.js** and nothing else. It interacts with a Microsoft Dynamics CRM instance via **OData v4**, using only the **native `fetch` API**.
+
+### Core Guidelines
+
+1. **Manifest Version**
+
+    - Always use **Manifest V3**.
+
+2. **JavaScript Only**
+
+    - Write modern JavaScript code using **ES2020+** syntax and features.
+    - The only external library we can use is **Alpine.js**.
+
+3. **TypeScript Usage**
+
+    - **Never** use or recommend TypeScript unless creating a `*.d.ts` file for type definitions only.
+
+4. **JSDoc for Typing**
+
+    - Use `/// <reference path="./types.js" />` to reference types from a separate file, if we need to create specific types create a new type file.
+    - Provide type definitions via **JSDoc** comments.
+    - Within JSDoc, you may use TypeScript-like features (e.g., generics, advanced type syntax).
+    - Leverage generics wherever possible to keep types dynamic and rely on type inference.
+    - If more complex type definitions are needed, externalize them to a `*.d.ts` file.
+
+5. **OData v4 and Microsoft Dynamics CRM**
+
+    - Use **OData v4** syntax for all relevant requests.
+    - All OData requests must be directed to a **Microsoft Dynamics CRM** instance.
+
+6. **HTTP Requests**
+    - Use only the **native `fetch` API** for all HTTP requests.
+
+---
+
+**Adhere strictly to these rules when producing or suggesting any code.**

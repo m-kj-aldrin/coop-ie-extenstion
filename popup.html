@@ -48,9 +48,23 @@
             .field span {
                 color: #666;
             }
+            .input-group {
+                margin-bottom: 16px;
+            }
+            input {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
         </style>
     </head>
     <body>
+        <div class="input-group">
+            <label for="mmid">MMID:</label>
+            <input type="text" id="mmid" placeholder="Enter MMID">
+        </div>
         <button id="makeRequest">Make CRM Request</button>
         <div id="status"></div>
         <div id="results"></div>

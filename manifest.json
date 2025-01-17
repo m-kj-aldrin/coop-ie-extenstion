@@ -1,19 +1,30 @@
 {
-  "manifest_version": 3,
-  "name": "CRM Request Extension",
-  "version": "1.0",
-  "description": "Makes POST request to CRM with authentication cookie",
-  "permissions": [
-    "cookies",
-    "tabs"
-  ],
-  "host_permissions": [
-    "https://coopcrmprod.crm4.dynamics.com/*"
-  ],
-  "action": {
-    "default_popup": "popup.html"
-  },
-  "background": {
-    "service_worker": "background.js"
-  }
-} 
+    "manifest_version": 3,
+    "name": "CRM Request Extension",
+    "version": "1.0",
+    "description": "Makes POST request to CRM with authentication cookie",
+    "permissions": ["cookies", "tabs"],
+    "host_permissions": ["https://coopcrmprod.crm4.dynamics.com/*"],
+    "action": {
+        "default_title": "Open CRM Tool"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "commands": {
+        "open-crm-tool": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+Y"
+            },
+            "description": "Open CRM Tool"
+        }
+    },
+    "sandbox": {
+        "pages": [
+            "sandbox.html"
+        ]
+    },
+    "content_security_policy": {
+        "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self';"
+    }
+}

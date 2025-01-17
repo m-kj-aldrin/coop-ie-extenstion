@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CRM Tool</title>
+        <style>
+            body {
+                width: 400px;
+                padding: 16px;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            }
+            button {
+                width: 100%;
+                padding: 8px;
+                background: #0078d4;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-bottom: 16px;
+            }
+            button:hover {
+                background: #106ebe;
+            }
+            .input-group {
+                margin-bottom: 16px;
+            }
+            select,
+            input {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+                margin-bottom: 8px;
+            }
+            .entity-data {
+                background: #f5f5f5;
+                border-radius: 4px;
+                padding: 12px;
+                margin-bottom: 8px;
+            }
+            .field {
+                margin-bottom: 8px;
+            }
+            .field label {
+                font-weight: bold;
+                color: #333;
+                display: inline-block;
+                width: 120px;
+            }
+        </style>
+        <!-- Scripts -->
+        <script src="alpine.js"></script>
+        <script src="sandbox-component.js"></script>
+    </head>
+    <body x-data="crmTool">
+        <h1>CRM Tool</h1>
+        <div class="input-group">
+            <label for="entityType">Search for:</label>
+            <select id="entityType" x-model="entityType">
+                <option value="contact">Contact (by MMID)</option>
+                <option value="incident">Incident (by Ticket Number)</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label
+                x-text="entityType === 'contact' ? 'MMID:' : 'Ticket Number:'"
+            ></label>
+            <input
+                type="text"
+                x-model="searchValue"
+                :placeholder="entityType === 'contact' ? 'Enter MMID' : 'Enter Ticket Number'"
+            />
+        </div>
+        <button @click="makeRequest">Search</button>
+        <div x-text="status"></div>
+        <template x-if="results.length > 0">
+            <div>
+                <template x-for="result in results" :key="getKey(result)">
+                    <div class="entity-data">
+                        <template x-if="entityType === 'contact'">
+                            <div>
+                                <div class="field">
+                                    <label>Name:</label>
+                                    <span
+                                        x-text="result.fullname || 'N/A'"
+                                    ></span>
+                                </div>
+                                <div class="field">
+                                    <label>Email:</label>
+                                    <span
+                                        x-text="result.emailaddress1 || 'N/A'"
+                                    ></span>
+                                </div>
+                                <div class="field">
+                                    <label>Customer ID:</label>
+                                    <span
+                                        x-text="result.coop_external_customer_id || 'N/A'"
+                                    ></span>
+                                </div>
+                            </div>
+                        </template>
+                        <template x-if="entityType === 'incident'">
+                            <div>
+                                <div class="field">
+                                    <label>Title:</label>
+                                    <span x-text="result.title || 'N/A'"></span>
+                                </div>
+                                <div class="field">
+                                    <label>Description:</label>
+                                    <span
+                                        x-text="result.description || 'N/A'"
+                                    ></span>
+                                </div>
+                                <div class="field">
+                                    <label>Ticket Number:</label>
+                                    <span
+                                        x-text="result.ticketnumber || 'N/A'"
+                                    ></span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </body>
+</html>

@@ -1,26 +1,6 @@
+/// <reference path="./types.js" />
+
 console.log("Background script loaded");
-
-/**
- * @typedef {Object} Contact
- * @property {string} fullname
- * @property {string} emailaddress1
- * @property {string} coop_external_customer_id
- * @property {string} coop_personalnumber
- */
-
-/**
- * @typedef {Object} Incident
- * @property {string} title
- * @property {string} description
- * @property {string} ticketnumber
- * @property {string} caseorigincode
- */
-
-/**
- * @typedef {Object} EntityConfig
- * @property {Object} select - Fields to select for the entity
- * @property {string} defaultFilter - Default filter for the entity
- */
 
 /** @type {Record<string, EntityConfig>} */
 const ENTITY_CONFIGS = {
@@ -72,7 +52,7 @@ const ENTITY_CONFIGS = {
  * @param {string} cookie - The CrmOwinAuth cookie value
  * @returns {Promise<CRMResponse<EntityTypeMap[T]>>}
  */
-async function create_odata_request(entity, options = {}, cookie) {
+async function create_odata_request(entity, cookie, options = {}) {
     const config = ENTITY_CONFIGS[entity];
     if (!config) {
         throw new Error(`Unsupported entity: ${entity}`);
@@ -108,25 +88,23 @@ async function create_odata_request(entity, options = {}, cookie) {
 /**
  * Makes an authenticated request to the CRM API
  * @param {string} cookie - The CrmOwinAuth cookie value
- * @returns {Promise<CRMResponse<Contact>>}
+ * @param {string} entityType - The type of entity to search for ('contact' or 'incident')
+ * @param {string} searchValue - The value to search for (MMID or ticket number)
+ * @returns {Promise<CRMResponse<Contact | Incident>>}
  */
-async function makeCRMRequest(cookie) {
+async function makeCRMRequest(cookie, entityType, searchValue) {
     console.log("Making CRM request with cookie:", cookie);
     try {
-        // Example: Get contacts with specific fields
-        const response = await create_odata_request(
-            "contacts",
-            {
-                select: {
-                    fullname: true,
-                    emailaddress1: true,
-                    coop_external_customer_id: true,
-                },
-                filter: "coop_external_customer_id eq '6485765'",
-                top: 1,
-            },
-            cookie
-        );
+        const entity = entityType === "contact" ? "contacts" : "incidents";
+        const filter =
+            entityType === "contact"
+                ? `coop_external_customer_id eq '${searchValue}'`
+                : `ticketnumber eq '${searchValue}'`;
+
+        const response = await create_odata_request(entity, cookie, {
+            filter,
+            top: 1,
+        });
         console.log("CRM Response:", response);
         return response;
     } catch (error) {
@@ -146,7 +124,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 });
 
                 if (cookies) {
-                    const data = await makeCRMRequest(cookies.value);
+                    const data = await makeCRMRequest(
+                        cookies.value,
+                        message.entityType,
+                        message.searchValue
+                    );
                     sendResponse({ data });
                 } else {
                     sendResponse({ error: "No CrmOwinAuth cookie found" });
@@ -155,8 +137,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 sendResponse({ error: error.message });
             }
         })();
-        return true; // Will respond asynchronously
+        return true;
     }
 });
 
-// export {};
+// Listen for extension icon clicks
+
+chrome.action.onClicked.addListener((tab) => {
+    chrome.tabs.create({
+        url: "crm-tool.html",
+    });
+});

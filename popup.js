@@ -56,6 +56,13 @@ function createEntityDisplay(data) {
 document.getElementById("makeRequest").addEventListener("click", async () => {
     const status = document.getElementById("status");
     const resultsContainer = document.getElementById("results");
+    const mmid = document.getElementById("mmid").value.trim();
+    
+    if (!mmid) {
+        status.textContent = "Please enter an MMID";
+        return;
+    }
+
     status.textContent = "Making request...";
     resultsContainer.innerHTML = "";
 
@@ -66,6 +73,7 @@ document.getElementById("makeRequest").addEventListener("click", async () => {
         });
         const response = await chrome.runtime.sendMessage({
             action: "makeCRMRequest",
+            mmid: mmid
         });
 
         if (response.error) {
